@@ -6,6 +6,7 @@
 #include <QImage>
 #include <QMessageBox>
 #include <math.h>
+#include <QAction>
 
 namespace Ui {
 class MainWindow;
@@ -25,9 +26,7 @@ private slots:
     void menuOpenFile();
     void menuSaveFile();
     void menuExit();
-
     void on_pushButton_clicked();
-
     void on_pushButton_2_clicked();
 
 signals:
@@ -36,6 +35,8 @@ signals:
 private:
     Ui::MainWindow *ui;
     QImage* image;
+    QAction* actionOpen;
+    QAction* actionSave;
 };
 
 #endif // MAINWINDOW_H

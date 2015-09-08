@@ -8,6 +8,20 @@ MainWindow::MainWindow(QWidget *parent) :
     image = new QImage();
     ui->setupUi(this);
 
+    actionOpen = new QAction(this);
+    actionSave = new QAction(this);
+
+    actionOpen->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_O));
+    ui->centralWidget->addAction(actionOpen);
+
+    actionSave->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_S));
+    ui->centralWidget->addAction(actionSave);
+
+
+    connect(actionSave, SIGNAL(triggered(bool)),
+            this, SLOT(menuSaveFile()));
+    connect(actionOpen, SIGNAL(triggered(bool)),
+            this, SLOT(menuOpenFile()));
     connect(ui->actionOpen, SIGNAL(triggered(bool)),
             this, SLOT(menuOpenFile()));
     connect(ui->actionSave, SIGNAL(triggered(bool)),
@@ -20,6 +34,7 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
+
 
 
 void MainWindow::on_lineButton_clicked()
@@ -40,57 +55,70 @@ void MainWindow::on_lineButton_clicked()
     int twoDy = 2 * dy, twoDyMinusDx = 2 * (dy - dx);
     int x, y;
 
-    double tan = double(dy) / double(dx);
-    QMessageBox::information(this, "S", QString::number(tan));
-
-    if(x1 > x2)
-    {
-        x = x2;
-        y = y2;
-        x2 = x1;
-        y2 = y1;
-    }
-    else
-    {
-        x = x1;
-        y = y1;
-    }
-    image->setPixel(x, y, qRgb(255, 0, 0));
-
-    while(x < x2)
-    {
-        x++;
-        if(p < 0)
-            p += twoDy;
-        else
-        {
-            y++;
-            p += twoDyMinusDx;
-        }
-        image->setPixel(x, y, qRgb(255, 0, 0));
-    }
-
-
+    //вертикальная линия
     if(dx == 0)
     {
         x = x1;
+        y = y1;
         while(y < y2)
         {
             image->setPixel(x, y, qRgb(255, 0, 0));
             y++;
         }
     }
+    //горизонтальная линия
     if(dy == 0)
     {
         y = y1;
+        x = x1;
         while(x < x2)
         {
             image->setPixel(x, y, qRgb(255, 0, 0));
             x++;
         }
     }
+    //убывающая линия
+    if((x1 < x2) && (y1 < y2))
+    {
+        x = x1;
+        y = y1;
+        image->setPixel(x, y, qRgb(255, 0, 0));
 
+        while(x < x2)
+        {
+            x++;
+            if(p < 0)
+                p += twoDy;
+            else
+            {
+                y++;
+                p += twoDyMinusDx;
+            }
+            image->setPixel(x, y, qRgb(255, 0, 0));
+        }
+    }
+    //возрастающая линия
+    else if((x1 < x2) && (y1 > y2))
+    {
+        x = x1;
+        y = y1;
+        image->setPixel(x, y, qRgb(255, 0, 0));
 
+        while(x < x2)
+        {
+            x++;
+            if(p < 0)
+            {
+                p += twoDy;
+            }
+            else
+            {
+                y--;
+                p += twoDyMinusDx;
+            }
+            image->setPixel(x, y, qRgb(255, 0, 0));
+        }
+    }
 
     ui->label->setPixmap(QPixmap::fromImage(*image));
 }
@@ -104,10 +132,7 @@ void MainWindow::menuOpenFile()
         ui->label->setPixmap(QPixmap(filename));
     }
     else
-    {
-        QMessageBox::information(this, "Error", "Error open file");
         return;
-    }
 }
 
 void MainWindow::menuSaveFile()
@@ -120,6 +145,7 @@ void MainWindow::menuSaveFile()
     {
         QString *filter = new QString(".bmp");
         QString filename = QFileDialog::getSaveFileName(0, "Save file", "D:", *filter);
+        filename += filter;
         if(!filename.isNull())
         {
             image->save(filename);
