@@ -1,20 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>Lab1</class>
- <widget class="QWidget" name="Lab1" >
-  <property name="geometry" >
+ <widget class="QWidget" name="Lab1">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>567</width>
+    <height>188</height>
    </rect>
   </property>
-  <property name="windowTitle" >
-   <string>Lab1</string>
+  <property name="windowTitle">
+   <string>Лабораторная №1</string>
   </property>
+  <layout class="QGridLayout" name="gridLayout_4">
+   <item row="0" column="0">
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_3">
+       <item>
+        <spacer name="horizontalSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>168</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <item>
+          <widget class="QPushButton" name="buttonOpen">
+           <property name="text">
+            <string>Открыть</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="buttonSave">
+           <property name="text">
+            <string>Сохранить</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>168</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QGroupBox" name="groupBox">
+         <property name="title">
+          <string>Линия</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout">
+          <item row="0" column="0">
+           <widget class="QLineEdit" name="lineX1"/>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLineEdit" name="lineX2"/>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLineEdit" name="lineY2"/>
+          </item>
+          <item row="2" column="0" colspan="2">
+           <widget class="QPushButton" name="buttonLine">
+            <property name="text">
+             <string>Нарисовать</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLineEdit" name="lineY1"/>
+          </item>
+         </layout>
+         <zorder>lineX1</zorder>
+         <zorder>lineY2</zorder>
+         <zorder>buttonLine</zorder>
+         <zorder>lineX2</zorder>
+         <zorder>lineY1</zorder>
+         <zorder>lineX1</zorder>
+         <zorder>buttonLine</zorder>
+         <zorder>lineY2</zorder>
+         <zorder>lineX2</zorder>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupBox_2">
+         <property name="title">
+          <string>Окружность</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_2">
+          <item row="2" column="0" colspan="2">
+           <widget class="QPushButton" name="buttonRing">
+            <property name="text">
+             <string>Нарисовать</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLineEdit" name="lineY"/>
+          </item>
+          <item row="0" column="0">
+           <widget class="QLineEdit" name="lineX"/>
+          </item>
+          <item row="0" column="1" rowspan="2">
+           <widget class="QLineEdit" name="lineR"/>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupBox_3">
+         <property name="title">
+          <string>Эллипс</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_3">
+          <item row="0" column="1">
+           <widget class="QLineEdit" name="lineRX"/>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLineEdit" name="lineYC"/>
+          </item>
+          <item row="2" column="0" colspan="2">
+           <widget class="QPushButton" name="buttonElipse">
+            <property name="text">
+             <string>Нарисовать</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLineEdit" name="lineRY"/>
+          </item>
+          <item row="0" column="0">
+           <widget class="QLineEdit" name="lineXC"/>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+   <item row="1" column="0">
+    <widget class="QLabel" name="label">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+       <horstretch>10</horstretch>
+       <verstretch>10</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </item>
+  </layout>
+  <zorder>groupBox</zorder>
+  <zorder>lineY1</zorder>
+  <zorder>groupBox_2</zorder>
+  <zorder>groupBox_3</zorder>
+  <zorder>label</zorder>
+  <zorder>buttonSave</zorder>
+  <zorder>buttonOpen</zorder>
+  <zorder>horizontalSpacer</zorder>
+  <zorder></zorder>
+  <zorder>horizontalSpacer_2</zorder>
  </widget>
- <layoutDefault spacing="6" margin="11" />
- <pixmapfunction></pixmapfunction>
+ <layoutdefault spacing="6" margin="11"/>
  <resources/>
  <connections/>
 </ui>
