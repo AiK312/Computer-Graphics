@@ -2,6 +2,11 @@
 #define LAB2_H
 
 #include <QWidget>
+#include <QFileDialog>
+#include <QMessageBox>
+#include <QAction>
+#include <QImage>
+#include "math.h"
 
 namespace Ui {
 class Lab2;
@@ -15,8 +20,15 @@ public:
     explicit Lab2(QWidget *parent = 0);
     ~Lab2();
 
+private slots:
+
+    void on_pushButton_3_clicked();
+    void on_buttonOpen_clicked();
+    void on_buttonSave_clicked();
+
 private:
     Ui::Lab2 *ui;
+    QImage* image;
 };
 
 #endif // LAB2_H
