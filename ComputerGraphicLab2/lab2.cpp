@@ -83,7 +83,7 @@ void Lab2::on_polylineButton_clicked()
     coordinateList.push_back(ui->lineY4->text().toInt());
 
     QMessageBox::information(this, "Test", QString::number(coordinateList.at(4)));
-
+    //проверочка для гита
 
 
 }
