@@ -84,6 +84,7 @@ void Lab2::on_polylineButton_clicked()
 
     QMessageBox::information(this, "Test", QString::number(coordinateList.at(4)));
     //проверочка для гита
+    //кря
 
 
 }
