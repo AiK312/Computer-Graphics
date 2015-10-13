@@ -68,3 +68,22 @@ void Lab2::on_buttonSave_clicked()
            }
        }
 }
+
+
+void Lab2::on_polylineButton_clicked()
+{
+    QList<int> coordinateList;
+    coordinateList.push_back(ui->lineX1->text().toInt());
+    coordinateList.push_back(ui->lineY1->text().toInt());
+    coordinateList.push_back(ui->lineX2->text().toInt());
+    coordinateList.push_back(ui->lineY2->text().toInt());
+    coordinateList.push_back(ui->lineX3->text().toInt());
+    coordinateList.push_back(ui->lineY3->text().toInt());
+    coordinateList.push_back(ui->lineX4->text().toInt());
+    coordinateList.push_back(ui->lineY4->text().toInt());
+
+    QMessageBox::information(this, "Test", QString::number(coordinateList.at(4)));
+
+
+
+}

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>562</width>
-    <height>177</height>
+    <height>178</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -107,38 +107,38 @@
        </property>
        <layout class="QGridLayout" name="gridLayout_2">
         <item row="0" column="0">
-         <widget class="QLineEdit" name="lineEdit"/>
+         <widget class="QLineEdit" name="lineX1"/>
         </item>
         <item row="0" column="1">
-         <widget class="QLineEdit" name="lineEdit_3"/>
+         <widget class="QLineEdit" name="lineX2"/>
         </item>
         <item row="0" column="2">
-         <widget class="QLineEdit" name="lineEdit_5"/>
+         <widget class="QLineEdit" name="lineX3"/>
         </item>
         <item row="0" column="3">
-         <widget class="QLineEdit" name="lineEdit_7"/>
+         <widget class="QLineEdit" name="lineX4"/>
         </item>
         <item row="1" column="0">
-         <widget class="QLineEdit" name="lineEdit_2"/>
+         <widget class="QLineEdit" name="lineY1"/>
         </item>
         <item row="1" column="1">
-         <widget class="QLineEdit" name="lineEdit_4"/>
+         <widget class="QLineEdit" name="lineY2"/>
         </item>
         <item row="1" column="2">
-         <widget class="QLineEdit" name="lineEdit_6"/>
+         <widget class="QLineEdit" name="lineY3"/>
         </item>
         <item row="1" column="3">
-         <widget class="QLineEdit" name="lineEdit_8"/>
+         <widget class="QLineEdit" name="lineY4"/>
         </item>
         <item row="2" column="0" colspan="2">
-         <widget class="QPushButton" name="pushButton">
+         <widget class="QPushButton" name="polylineButton">
           <property name="text">
            <string>Ломанная</string>
           </property>
          </widget>
         </item>
         <item row="2" column="2" colspan="2">
-         <widget class="QPushButton" name="pushButton_2">
+         <widget class="QPushButton" name="antialiasingButton">
           <property name="text">
            <string>Сгладить</string>
           </property>
@@ -169,16 +169,16 @@
   <tabstop>lineFourX</tabstop>
   <tabstop>lineFourY</tabstop>
   <tabstop>pushButton_3</tabstop>
-  <tabstop>lineEdit</tabstop>
-  <tabstop>lineEdit_2</tabstop>
-  <tabstop>lineEdit_3</tabstop>
-  <tabstop>lineEdit_4</tabstop>
-  <tabstop>lineEdit_5</tabstop>
-  <tabstop>lineEdit_6</tabstop>
-  <tabstop>lineEdit_7</tabstop>
-  <tabstop>lineEdit_8</tabstop>
-  <tabstop>pushButton</tabstop>
-  <tabstop>pushButton_2</tabstop>
+  <tabstop>lineX1</tabstop>
+  <tabstop>lineY1</tabstop>
+  <tabstop>lineX2</tabstop>
+  <tabstop>lineY2</tabstop>
+  <tabstop>lineX3</tabstop>
+  <tabstop>lineY3</tabstop>
+  <tabstop>lineX4</tabstop>
+  <tabstop>lineY4</tabstop>
+  <tabstop>polylineButton</tabstop>
+  <tabstop>antialiasingButton</tabstop>
   <tabstop>buttonOpen</tabstop>
   <tabstop>buttonSave</tabstop>
  </tabstops>

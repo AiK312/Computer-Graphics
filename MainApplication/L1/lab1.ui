@@ -116,14 +116,14 @@
           <item row="0" column="1">
            <widget class="QLineEdit" name="lineRX">
             <property name="text">
-             <string>300</string>
+             <string>100</string>
             </property>
            </widget>
           </item>
           <item row="1" column="0">
            <widget class="QLineEdit" name="lineYC">
             <property name="text">
-             <string>100</string>
+             <string>525</string>
             </property>
            </widget>
           </item>
@@ -137,14 +137,14 @@
           <item row="1" column="1">
            <widget class="QLineEdit" name="lineRY">
             <property name="text">
-             <string>300</string>
+             <string>50</string>
             </property>
            </widget>
           </item>
           <item row="0" column="0">
            <widget class="QLineEdit" name="lineXC">
             <property name="text">
-             <string>100</string>
+             <string>840</string>
             </property>
            </widget>
           </item>

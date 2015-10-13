@@ -7,6 +7,7 @@
 #include <QAction>
 #include <QImage>
 #include "math.h"
+#include <QList>
 
 namespace Ui {
 class Lab2;
@@ -25,6 +26,7 @@ private slots:
     void on_pushButton_3_clicked();
     void on_buttonOpen_clicked();
     void on_buttonSave_clicked();
+    void on_polylineButton_clicked();
 
 private:
     Ui::Lab2 *ui;
