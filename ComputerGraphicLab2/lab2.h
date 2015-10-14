@@ -33,7 +33,7 @@ private slots:
 private:
     Ui::Lab2 *ui;
     QImage *image;
-
+    QMap<int, int> *coordinateList;
 };
 
 #endif // LAB2_H

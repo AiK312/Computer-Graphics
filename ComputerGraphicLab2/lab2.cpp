@@ -5,10 +5,10 @@ Lab2::Lab2(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Lab2)
 {
+    image = new QImage();
     ui->setupUi(this);
     srand(time(0));
-    //h = 0;
-    //w = 0;
+
 }
 
 Lab2::~Lab2()
@@ -84,16 +84,16 @@ void Lab2::on_polylineButton_clicked()
     int h = image->height();
     int w = image->width();
 
-    QMap<int, int> coordinateList;
+    coordinateList = new QMap<int, int>();
     QMap<int, int>::iterator it;
     int pointCount = ui->pointCount->text().toInt();
 
     for(int count = 0; count < pointCount; count++)
     {
-         coordinateList.insert(1+rand()%(w-1), 1+rand()%(h-1));
+         coordinateList->insert(1+rand()%(w-1), 1+rand()%(h-1));
     }
 
-    for(it = coordinateList.begin(); it != coordinateList.end()-1; ++it)
+    for(it = coordinateList->begin(); it != coordinateList->end()-1; ++it)
     {
         int x1 = it.key();
         int y1 = it.value();
@@ -123,36 +123,55 @@ void Lab2::on_antialiasingButton_clicked()
         return;
     }
 
-    int h = image->height();
-    int w = image->width();
-
-    QMap<int, int> coordinateList;
-    QMap<int, int>::iterator it;
-
-    int pointCount = ui->pointCount->text().toInt();
-    for(int count = 0; count < pointCount; count++)
+    if(coordinateList->isEmpty())
     {
-        coordinateList.insert(1+rand()%(w-1), 1+rand()%(h-1));
+        QMessageBox::information(this, "Warning!", "Сначала постройте ломаную");
+        return;
     }
 
-    for(it = coordinateList.begin()+1; it != coordinateList.end()-2; it++)
+    QMap<int, int>::iterator it;        
+
+    for(it = coordinateList->begin(); it != coordinateList->end()-1; it++)
     {
         int xCur = it.key();
         int yCur = it.value();
-        it--;
-        int xPre = it.key();
-        int yPre = it.value();
-        it += 2;
-        int xNext = it.key();
-        int yNext = it.value();
-        it++;
-        int xNextNext = it.key();
-        int yNextNext = it.value();
-        it -= 2;
-        int x, y;
-        double t;
+        int xPre=0, yPre=0, xNext=0, yNext=0, xNextNext=0, yNextNext=0;
 
-        for(t=0; t<=1; t+=0.001)
+        if(it == coordinateList->begin())
+        {
+            xPre = xCur;
+            yPre = yCur;
+            it++;
+        }
+        else
+        {
+            it--;
+            xPre = it.key();
+            yPre = it.value();
+            it += 2;
+        }
+
+        xNext = it.key();
+        yNext = it.value();
+        it--;
+
+        if(it == coordinateList->end()-2)
+        {
+            xNextNext = xNext;
+            yNextNext = yNext;
+        }
+        else
+        {
+            it += 2;
+            xNextNext = it.key();
+            yNextNext = it.value();
+            it -=2;
+        }
+
+        int x, y;
+
+
+        for(double t=0; t<=1; t+=0.001)
         {
             int a0 = (xPre + 4*xCur + xNext) / 6;
             int a1 = (-xPre + xNext) / 2;
