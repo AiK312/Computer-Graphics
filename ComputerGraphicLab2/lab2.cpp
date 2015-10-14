@@ -6,6 +6,9 @@ Lab2::Lab2(QWidget *parent) :
     ui(new Ui::Lab2)
 {
     ui->setupUi(this);
+    srand(time(0));
+    //h = 0;
+    //w = 0;
 }
 
 Lab2::~Lab2()
@@ -33,7 +36,7 @@ void Lab2::on_pushButton_3_clicked()
         int y = pow(t,3)*P3Y+3*pow(t,2)*(1-t)*P2Y+
                 3*t*pow((1-t),2)*P1Y+pow((1-t), 3)*P0Y;
 
-        image->setPixel(x, y, qRgb(0, 255, 0));
+        image->setPixel(x, y, qRgb(0, 0, 255));
     }
 
     ui->label->setPixmap(QPixmap::fromImage(*image));
@@ -42,49 +45,130 @@ void Lab2::on_pushButton_3_clicked()
 void Lab2::on_buttonOpen_clicked()
 {
     QString filename = QFileDialog::getOpenFileName(0, "Open File", "D:", "*.bmp");
-        if(!filename.isNull())
-        {
-            image->load(filename);
-            ui->label->setPixmap(QPixmap(filename));
-        }
-        else
-            return;
+    if(!filename.isNull())
+    {
+        image->load(filename);
+        ui->label->setPixmap(QPixmap(filename));
+    }
+    else
+        return;
 }
 
 void Lab2::on_buttonSave_clicked()
 {
     if(image->isNull())
-       {
-           QMessageBox::information(this, "Warning!", "Сначала надо открыть файл");
-       }
-       else
-       {
-           QString *filter = new QString(".bmp");
-           QString filename = QFileDialog::getSaveFileName(0, "Save file", "D:", *filter);
-           filename += filter;
-           if(!filename.isNull())
-           {
-               image->save(filename);
-           }
-       }
+    {
+        QMessageBox::information(this, "Warning!", "Сначала надо открыть файл");
+    }
+    else
+    {
+        QString *filter = new QString(".bmp");
+        QString filename = QFileDialog::getSaveFileName(0, "Save file", "D:", *filter);
+        filename += filter;
+        if(!filename.isNull())
+        {
+            image->save(filename);
+        }
+    }
 }
 
 
 void Lab2::on_polylineButton_clicked()
 {
-    QList<int> coordinateList;
-    coordinateList.push_back(ui->lineX1->text().toInt());
-    coordinateList.push_back(ui->lineY1->text().toInt());
-    coordinateList.push_back(ui->lineX2->text().toInt());
-    coordinateList.push_back(ui->lineY2->text().toInt());
-    coordinateList.push_back(ui->lineX3->text().toInt());
-    coordinateList.push_back(ui->lineY3->text().toInt());
-    coordinateList.push_back(ui->lineX4->text().toInt());
-    coordinateList.push_back(ui->lineY4->text().toInt());
+    if(image->isNull())
+    {
+        QMessageBox::information(this, "Warning!", "Сначала надо открыть файл");
+        return;
+    }
 
-    QMessageBox::information(this, "Test", QString::number(coordinateList.at(4)));
-    //проверочка для гита
-    //кря
+    int h = image->height();
+    int w = image->width();
 
+    QMap<int, int> coordinateList;
+    QMap<int, int>::iterator it;
+    int pointCount = ui->pointCount->text().toInt();
 
+    for(int count = 0; count < pointCount; count++)
+    {
+         coordinateList.insert(1+rand()%(w-1), 1+rand()%(h-1));
+    }
+
+    for(it = coordinateList.begin(); it != coordinateList.end()-1; ++it)
+    {
+        int x1 = it.key();
+        int y1 = it.value();
+        it++;
+        int x2 = it.key();
+        int y2 = it.value();
+        it--;
+
+        double x, y;
+
+        for(x = x1; x < x2; x+=0.001)
+        {
+            y = ((x-x1)*(y2-y1)) / (x2-x1) + y1;
+            image->setPixel(x, y, qRgb(0, 255, 0));
+        }
+        ui->label->setPixmap(QPixmap::fromImage(*image));
+    }
+
+}
+
+void Lab2::on_antialiasingButton_clicked()
+{
+
+    if(image->isNull())
+    {
+        QMessageBox::information(this, "Warning!", "Сначала надо открыть файл");
+        return;
+    }
+
+    int h = image->height();
+    int w = image->width();
+
+    QMap<int, int> coordinateList;
+    QMap<int, int>::iterator it;
+
+    int pointCount = ui->pointCount->text().toInt();
+    for(int count = 0; count < pointCount; count++)
+    {
+        coordinateList.insert(1+rand()%(w-1), 1+rand()%(h-1));
+    }
+
+    for(it = coordinateList.begin()+1; it != coordinateList.end()-2; it++)
+    {
+        int xCur = it.key();
+        int yCur = it.value();
+        it--;
+        int xPre = it.key();
+        int yPre = it.value();
+        it += 2;
+        int xNext = it.key();
+        int yNext = it.value();
+        it++;
+        int xNextNext = it.key();
+        int yNextNext = it.value();
+        it -= 2;
+        int x, y;
+        double t;
+
+        for(t=0; t<=1; t+=0.001)
+        {
+            int a0 = (xPre + 4*xCur + xNext) / 6;
+            int a1 = (-xPre + xNext) / 2;
+            int a2 = (xPre - 2*xCur + xNext) / 2;
+            int a3 = (-xPre + 3*xCur - 3*xNext + xNextNext) / 6;
+
+            int b0 = (yPre + 4*yCur + yNext) / 6;
+            int b1 = (-yPre + yNext) / 2;
+            int b2 = (yPre - 2*yCur + yNext) / 2;
+            int b3 = (-yPre + 3*yCur - 3*yNext + yNextNext) / 6;
+
+            x = ((a3*t+a2)*t+a1)*t+a0;
+            y = ((b3*t+b2)*t+b1)*t+b0;
+
+            image->setPixel(x, y, qRgb(255, 0, 0));
+        }
+        ui->label->setPixmap(QPixmap::fromImage(*image));
+    }
 }
