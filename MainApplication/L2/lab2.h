@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QFileDialog>
+#include <QDialog>
 #include <QMessageBox>
 #include <QAction>
 #include <QImage>
@@ -15,7 +16,7 @@ namespace Ui {
 class Lab2;
 }
 
-class Lab2 : public QWidget
+class Lab2 : public QDialog
 {
     Q_OBJECT
 

@@ -18,24 +18,22 @@ class Lab1 : public QDialog
     Q_OBJECT
 
 public:
-    explicit Lab1(QWidget *parent = 0);   
+    explicit Lab1(QWidget *parent = 0);
     Lab1(QWidget *parent, QImage &imageFromMain);
     ~Lab1();
 
 private slots:
     void on_buttonLine_clicked();
     void on_buttonRing_clicked();
-    void on_buttonElipse_clicked();   
+    void on_buttonElipse_clicked();
 
 signals:
     void exit();
-    void endFucn();
+    void endFunc();
 
 private:
     Ui::Lab1 *ui;
     QImage* image;
-    QAction* actionOpen;
-    QAction* actionSave;
 };
 
 #endif // LAB1_H

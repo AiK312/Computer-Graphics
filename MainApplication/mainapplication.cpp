@@ -8,6 +8,7 @@ MainApplication::MainApplication(QWidget *parent) :
     ui->setupUi(this);
     image = new QImage();
     L1 = new Lab1(this, *image);
+    L2 = new Lab2(this, *image);
     actionOpen = new QAction(this);
     actionSave = new QAction(this);
     actionSaveAs = new QAction(this);
@@ -21,26 +22,32 @@ MainApplication::MainApplication(QWidget *parent) :
     actionSaveAs->setShortcut((QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_S)));
     ui->centralWidget->addAction(actionSaveAs);
 
-    connect(actionOpen, SIGNAL(triggered(bool)),
-            this, SLOT(openFile()));
-    connect(actionSave, SIGNAL(triggered(bool)),
-            this, SLOT(saveFile()));
-    connect(actionSaveAs, SIGNAL(triggered(bool)),
-            this, SLOT(saveAsFile()));
 
-    connect(ui->actionOpen, SIGNAL(triggered(bool)),
-            this, SLOT(openFile()));
-    connect(ui->actionSave, SIGNAL(triggered(bool)),
-            this, SLOT(saveFile()));
-    connect(ui->actionSaveAs, SIGNAL(triggered(bool)),
-            this, SLOT(saveAsFile()));
-    connect(ui->actionExit, SIGNAL(triggered(bool)),
-            this, SLOT(exitApp()));
+    connect(actionOpen, &QAction::triggered,
+            this, &MainApplication::openFile);
+    connect(actionSave, &QAction::triggered,
+            this, &MainApplication::saveFile);
+    connect(actionSaveAs, &QAction::triggered,
+            this, &MainApplication::saveAsFile);
 
-    connect(ui->actionLab1, SIGNAL(triggered(bool)),
-            this, SLOT(runLab1()));
-    connect(L1, SIGNAL(endFucn()),
-            this, SLOT(setLabelImage()));
+    connect(ui->actionOpen, &QAction::triggered,
+            this, &MainApplication::openFile);
+    connect(ui->actionSave, &QAction::triggered,
+            this, &MainApplication::saveFile);
+    connect(ui->actionSaveAs, &QAction::triggered,
+            this, &MainApplication::saveAsFile);
+    connect(ui->actionExit, &QAction::triggered,
+            this, &MainApplication::exitApp);
+
+    connect(ui->actionLab1, &QAction::triggered,
+            this, &MainApplication::runLab1);
+    connect(L1, &Lab1::endFunc,
+            this, &MainApplication::setLabelImage);
+
+    connect(ui->actionLab2, &QAction::triggered,
+            this, &MainApplication::runLab2);
+    connect(L2, &Lab2::endFunc,
+            this, &MainApplication::setLabelImage);
 
 }
 
@@ -56,6 +63,10 @@ void MainApplication::openFile()
     {
         image->load(filename);
         ui->label->setPixmap(QPixmap(filename));
+        ui->menuLabs->setEnabled(true);
+        ui->actionSave->setEnabled(true);
+        ui->actionSaveAs->setEnabled(true);
+        ui->actionClean->setEnabled(true);
     }
     else
         return;
@@ -104,4 +115,9 @@ void MainApplication::setLabelImage()
 void MainApplication::runLab1()
 {
     L1->show();
+}
+
+void MainApplication::runLab2()
+{
+    L2->show();
 }

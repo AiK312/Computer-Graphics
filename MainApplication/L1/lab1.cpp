@@ -106,7 +106,7 @@ void Lab1::on_buttonLine_clicked()
             }
         }
     }
-    emit endFucn();
+    emit endFunc();
 }
 
 void Lab1::on_buttonRing_clicked()
@@ -130,7 +130,7 @@ void Lab1::on_buttonRing_clicked()
             image->setPixel(x, y, qRgb(0, 255, 0));
         }
     }
-    emit endFucn();
+    emit endFunc();
 }
 
 void Lab1::on_buttonElipse_clicked()
@@ -158,6 +158,6 @@ void Lab1::on_buttonElipse_clicked()
             image->setPixel(x, yb, qRgb(0, 0, 255));
         }
     }
-    emit endFucn();
+    emit endFunc();
 }
 

@@ -5,6 +5,7 @@
 #include <QAction>
 //#include <QString>
 #include "L1/lab1.h"
+#include "L2/lab2.h"
 
 namespace Ui {
 class MainApplication;
@@ -22,6 +23,7 @@ private:
     Ui::MainApplication *ui;
     QImage* image;
     Lab1 *L1;
+    Lab2 *L2;
     QAction* actionOpen;
     QAction* actionSave;
     QAction* actionSaveAs;
@@ -34,6 +36,7 @@ private slots:
     void exitApp();
     void setLabelImage();
     void runLab1();
+    void runLab2();
 
 signals:
     void exit();

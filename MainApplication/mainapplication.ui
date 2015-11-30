@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>335</width>
-    <height>101</height>
+    <height>57</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,8 +17,11 @@
    <layout class="QGridLayout" name="gridLayout">
     <item row="0" column="0">
      <widget class="QLabel" name="label">
+      <property name="mouseTracking">
+       <bool>false</bool>
+      </property>
       <property name="text">
-       <string>TextLabel</string>
+       <string/>
       </property>
      </widget>
     </item>
@@ -33,13 +36,18 @@
      <height>21</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menu">
+   <widget class="QMenu" name="menuLabs">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="title">
      <string>Лабораторные</string>
     </property>
     <addaction name="actionLab1"/>
     <addaction name="actionLab2"/>
     <addaction name="actionLab3"/>
+    <addaction name="actionLab4"/>
+    <addaction name="actionLab5"/>
    </widget>
    <widget class="QMenu" name="menu_2">
     <property name="title">
@@ -54,10 +62,12 @@
     <addaction name="actionSave"/>
     <addaction name="actionSaveAs"/>
     <addaction name="separator"/>
+    <addaction name="actionClean"/>
+    <addaction name="separator"/>
     <addaction name="actionExit"/>
    </widget>
    <addaction name="menu_3"/>
-   <addaction name="menu"/>
+   <addaction name="menuLabs"/>
    <addaction name="menu_2"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
@@ -94,6 +104,9 @@
    </property>
   </action>
   <action name="actionSave">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Сохранить</string>
    </property>
@@ -104,8 +117,29 @@
    </property>
   </action>
   <action name="actionSaveAs">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Сохранить как</string>
+   </property>
+  </action>
+  <action name="actionLab4">
+   <property name="text">
+    <string>Лабораторная 4</string>
+   </property>
+  </action>
+  <action name="actionLab5">
+   <property name="text">
+    <string>Лабораторная 5</string>
+   </property>
+  </action>
+  <action name="actionClean">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Очистить</string>
    </property>
   </action>
  </widget>

@@ -113,7 +113,7 @@ void Lab1::on_buttonRing_clicked()
     r = ui->lineR->text().toInt();
     double tangle;
 
-    for(tangle = 0; tangle < 360; tangle++)
+    for(tangle = 0; tangle < 360; tangle+=0.001)
     {
         x = xc + r * cos(tangle);
         y = yc + r * sin(tangle);
@@ -137,7 +137,7 @@ void Lab1::on_buttonElipse_clicked()
     ry = ui->lineRY->text().toInt();
     int end = xc + rx;
     int start = xc - rx;
-    for(x = start; x <= end; x++)
+    for(x = start; x <= end; x+=0.001)
     {
 
         ya = yc + ry * sqrt(1 - pow((x - xc)/rx, 2));

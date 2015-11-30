@@ -2,7 +2,7 @@
 #include "ui_lab2.h"
 
 Lab2::Lab2(QWidget *parent) :
-    QWidget(parent),
+    QDialog(parent),
     ui(new Ui::Lab2)
 {
     image = new QImage();
@@ -27,6 +27,12 @@ Lab2::~Lab2()
 
 void Lab2::on_pushButton_3_clicked()
 {
+    if(image->isNull())
+    {
+        QMessageBox::information(this, "Warning!", "Сначала надо открыть файл");
+        return;
+    }
+
     int P0X = ui->lineFirstX->text().toInt();
     int P1X = ui->lineSecondX->text().toInt();
     int P2X = ui->lineThirdX->text().toInt();
@@ -47,8 +53,7 @@ void Lab2::on_pushButton_3_clicked()
 
         image->setPixel(x, y, qRgb(0, 0, 255));
     }
-
-    ui->label->setPixmap(QPixmap::fromImage(*image));
+    emit endFunc();
 }
 
 
@@ -88,9 +93,9 @@ void Lab2::on_polylineButton_clicked()
             y = ((x-x1)*(y2-y1)) / (x2-x1) + y1;
             image->setPixel(x, y, qRgb(0, 255, 0));
         }
-        ui->label->setPixmap(QPixmap::fromImage(*image));
-    }
 
+    }
+emit endFunc();
 }
 
 void Lab2::on_antialiasingButton_clicked()
@@ -167,6 +172,6 @@ void Lab2::on_antialiasingButton_clicked()
 
             image->setPixel(x, y, qRgb(255, 0, 0));
         }
-        ui->label->setPixmap(QPixmap::fromImage(*image));
     }
+    emit endFunc();
 }
