@@ -35,6 +35,8 @@ private slots:
 
     void on_areaButton_clicked();
 
+    void on_paintButton_clicked();
+
 private:
     Ui::Lab3 *ui;
     QImage *image;

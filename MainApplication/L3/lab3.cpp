@@ -42,6 +42,8 @@ void Lab3::on_windowButton_clicked()
     rect->y_max = ui->windowYREdit->text().toInt();
 
     QPainter *g = new QPainter(image);
+    QColor color(255, 0, 0, 255);
+    g->setPen(color);
     g->drawLine(rect->x_min, rect->y_min, rect->x_max, rect->y_min);
     g->drawLine(rect->x_max, rect->y_min, rect->x_max, rect->y_max);
     g->drawLine(rect->x_max, rect->y_max, rect->x_min, rect->y_max);
@@ -168,6 +170,49 @@ void Lab3::on_areaButton_clicked()
         delete g;
         Colen_Sutherland(x1, y1, x2, y2);
         emit endFunc();
+    }
+    emit endFunc();
+}
+
+void Lab3::on_paintButton_clicked()
+{
+    QPainter *g = new QPainter(image);
+    g->drawLine(50,100,250,50);
+    g->drawLine(250,50,290,200);
+    g->drawLine(290,200,200,250);
+    g->drawLine(200,250,100,150);
+    g->drawLine(100,150,50,100);
+
+    int k=0;
+    int m[20];
+
+    int uzor[3][3] = {{0,0,1},
+                     {0,1,0},
+                     {1,0,1}};
+
+    for(int i=0; i<300; i++)
+    {
+        for(int j=0; j<300; j++)
+        {
+            if(image->pixel(i, j) != -1)
+            {
+                k++;
+                m[k-1] = j;
+                while(image->pixel(i, j) != -1 && j<300)
+                {
+                    j++;
+                }
+                if(k==1)
+                    m[k-1] = j;
+            }
+        }
+        if(k%2 == 0 && k != 0)
+        {
+            for(int j = m[0]; j<m[1]; j++)
+                if(uzor[i%3][j%3] == 1)
+                    image->setPixel(i, j, qRgb(0, 255, 0));
+        }
+        k=0;
     }
     emit endFunc();
 }
