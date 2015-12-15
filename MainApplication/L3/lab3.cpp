@@ -12,10 +12,9 @@ Lab3::Lab3(QWidget *parent) :
 {
     image = new QImage();
     rect = (RECT*)(new int[sizeof(RECT)]);
-    a = (POINT*)(new int[sizeof(POINT)]);
-    b = (POINT*)(new int[sizeof(POINT)]);
     c = (POINT*)(new int[sizeof(POINT)]);
     ui->setupUi(this);
+    srand(time(0));
 }
 
 Lab3::Lab3(QWidget *parent, QImage &imageFromMain) :
@@ -25,9 +24,8 @@ Lab3::Lab3(QWidget *parent, QImage &imageFromMain) :
 {
     ui->setupUi(this);
     rect = (RECT*)(new int[sizeof(RECT)]);
-    a = (POINT*)(new int[sizeof(POINT)]);
-    b = (POINT*)(new int[sizeof(POINT)]);
     c = (POINT*)(new int[sizeof(POINT)]);
+    srand(time(0));
 }
 
 
@@ -54,62 +52,56 @@ void Lab3::on_windowButton_clicked()
 
 }
 
-void Lab3::on_lineButton_clicked()
-{
-    a->x = ui->lineX0Edit->text().toInt();
-    a->y = ui->lineY0Edit->text().toInt();
-    b->x = ui->lineX1Edit->text().toInt();
-    b->y = ui->lineY1Edit->text().toInt();
-    QPainter *g = new QPainter(image);
-    g->drawLine(a->x, a->y, b->x, b->y);
-    delete g;
-    cohen_sutherland();
-    emit endFunc();
-}
-
-int Lab3::cohen_sutherland()
+void Lab3::Colen_Sutherland(int x1, int y1, int x2, int y2)
 {
     int code_a, code_b, code;
-    code_a = vcode('a');
-    code_b = vcode('b');
+    code_a = VCODE(x1, y1);
+    code_b = VCODE(x2, y2);
+
+    if(code_a & code_b)
+        return;
 
     while(code_a | code_b)
     {
         if(code_a)
         {
             code = code_a;
-            c = a;
+            c->x = x1;
+            c->y = y1;
         }
         else
         {
             code = code_b;
-            c = b;
+            c->x = x2;
+            c->y = y2;
         }
 
         if (code & LEFT)
         {
-            c->y += (a->y - b->y) * (rect->x_min - c->x) / (a->x - b->x);
+            c->y += (y1 - y2) * (rect->x_min - c->x) / (x1 - x2);
             c->x = rect->x_min;
         } else if (code & RIGHT) {
-            c->y += (a->y - b->y) * (rect->x_max - c->x) / (a->x - b->x);
+            c->y += (y1 - y2) * (rect->x_max - c->x) / (x1 - x2);
             c->x = rect->x_max;
         }/* если c ниже r, то передвигаем c на прямую y = r->y_min
                     если c выше r, то передвигаем c на прямую y = r->y_max */
         else if (code & BOT) {
-            c->x += (a->x - b->x) * (rect->y_max - c->y) / (a->y - b->y);
+            c->x += (x1 - x2) * (rect->y_max - c->y) / (y1 - y2);
             c->y = rect->y_max;
         } else if (code & TOP) {
-            c->x += (a->x - b->x) * (rect->y_min - c->y) / (a->y - b->y);
+            c->x += (x1 - x2) * (rect->y_min - c->y) / (y1 - y2);
             c->y = rect->y_min;
         }
 
         /* обновляем код */
         if (code == code_a) {
-            a = c;
-            code_a = vcode('a');
+            x1 = c->x;
+            y1 = c->y;
+            code_a = VCODE(x1, y1);
         } else {
-            b = c;
-            code_b = vcode('b');
+            x2 = c->x;
+            y2 = c->y;
+            code_b = VCODE(x2, y2);
         }
 
     }
@@ -117,40 +109,65 @@ int Lab3::cohen_sutherland()
     QPainter *g = new QPainter(image);
     QColor color(255, 0, 0, 255);
     g->setPen(color);
-    g->drawLine(a->x, a->y, b->x, b->y);
+    g->drawLine(x1, y1, x2, y2);
     delete g;
 }
 
-int Lab3::vcode(char ch)
+int Lab3::VCODE(int x, int y)
 {
     int result = 0;
-    switch (ch) {
-    case 'a':
-        if(a->x < rect->x_min)
-            result += LEFT;
-        if(a->x > rect->x_max)
-            result += RIGHT;
-        if(a->y < rect->y_min)
-            result += TOP;
-        if(a->y > rect->y_max)
-            result += BOT;
-        break;
-    case 'b':
-        if(b->x < rect->x_min)
-            result += LEFT;
-        if(b->x > rect->x_max)
-            result += RIGHT;
-        if(b->y < rect->y_min)
-            result += TOP;
-        if(b->y > rect->y_max)
-            result += BOT;
-        break;
-    default:
-        QMessageBox::information(this, "Warning", "Choose A or B in argument");
-        break;
-    }
-
-return result;
+    if(x < rect->x_min)
+        result += LEFT;
+    if(x > rect->x_max)
+        result += RIGHT;
+    if(y < rect->y_min)
+        result += TOP;
+    if(y > rect->y_max)
+        result += BOT;
+    return result;
 }
 
+void Lab3::on_areaButton_clicked()
+{
+    int count = ui->countSideLine->text().toInt();
+    int h = image->height();
+    int w = image->width();
+    int x1=0, x2=0, y1=0, y2=0;
 
+    coordinateList = new QMap<int, int>();
+    QMap<int, int>::iterator it;
+
+    for(int i = 0; i < count; i++)
+    {
+         coordinateList->insert(1+rand()%(w-1), 1+rand()%(h-1));
+    }
+
+    for(it = coordinateList->begin(); it != coordinateList->end(); it++)
+    {
+        if(it == coordinateList->end()-1)
+        {
+            x1 = it.key();
+            y1 = it.value();
+            it = coordinateList->begin();
+            x2 = it.key();
+            y2 = it.value();
+            it = coordinateList->end()-1;
+
+        }
+        else
+        {
+            x1 = it.key();
+            y1 = it.value();
+            it++;
+            x2 = it.key();
+            y2 = it.value();
+            it--;
+        }
+        QPainter *g = new QPainter(image);
+        g->drawLine(x1,y1,x2,y2);
+        delete g;
+        Colen_Sutherland(x1, y1, x2, y2);
+        emit endFunc();
+    }
+    emit endFunc();
+}

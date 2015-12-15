@@ -8,6 +8,7 @@
 #include <QMap>
 #include <QRgb>
 #include <QPainter>
+#include <time.h>
 
 namespace Ui {
 class Lab3;
@@ -27,10 +28,12 @@ signals:
 
 private slots:
     void on_windowButton_clicked();
-    void on_lineButton_clicked();
-    int cohen_sutherland();
-    int vcode(char ch);
+    void Colen_Sutherland(int, int, int, int);
+    int VCODE(int, int);
 
+
+
+    void on_areaButton_clicked();
 
 private:
     Ui::Lab3 *ui;
@@ -43,11 +46,10 @@ private:
     {
         int x, y;
     };
-
-    POINT *a = NULL;
-    POINT *b = NULL;
     POINT *c = NULL;
     RECT *rect = NULL;
+
+    QMap<int, int> *coordinateList;
 
 };
 

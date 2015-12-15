@@ -17,6 +17,7 @@ Lab2::Lab2(QWidget *parent, QImage &imageFromMain) :
 	ui(new Ui::Lab2)
 	{
 		ui->setupUi(this);
+        srand(time(0));
 	}
 
 
