@@ -7,6 +7,7 @@
 #include <QDialog>
 #include <QMap>
 #include <QRgb>
+#include <QPainter>
 
 namespace Ui {
 class Lab3;
@@ -27,9 +28,9 @@ signals:
 private slots:
     void on_windowButton_clicked();
     void on_lineButton_clicked();
-    int Code(int, int);
-    int KolSozLine(int, int, int, int);    
-    void drawLine(int, int, int, int, char, QRgb);
+    int cohen_sutherland();
+    int vcode(char ch);
+
 
 private:
     Ui::Lab3 *ui;
@@ -38,7 +39,15 @@ private:
     {
         int x_min, y_min, x_max, y_max;
     };
-    RECT *rect = NULL;    
+    struct POINT
+    {
+        int x, y;
+    };
+
+    POINT *a = NULL;
+    POINT *b = NULL;
+    POINT *c = NULL;
+    RECT *rect = NULL;
 
 };
 

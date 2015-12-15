@@ -11,7 +11,10 @@ Lab3::Lab3(QWidget *parent) :
     ui(new Ui::Lab3)
 {
     image = new QImage();
-    
+    rect = (RECT*)(new int[sizeof(RECT)]);
+    a = (POINT*)(new int[sizeof(POINT)]);
+    b = (POINT*)(new int[sizeof(POINT)]);
+    c = (POINT*)(new int[sizeof(POINT)]);
     ui->setupUi(this);
 }
 
@@ -21,7 +24,10 @@ Lab3::Lab3(QWidget *parent, QImage &imageFromMain) :
     ui(new Ui::Lab3)
 {
     ui->setupUi(this);
-    
+    rect = (RECT*)(new int[sizeof(RECT)]);
+    a = (POINT*)(new int[sizeof(POINT)]);
+    b = (POINT*)(new int[sizeof(POINT)]);
+    c = (POINT*)(new int[sizeof(POINT)]);
 }
 
 
@@ -32,222 +38,119 @@ Lab3::~Lab3()
 
 void Lab3::on_windowButton_clicked()
 {
-    
-    int XL = ui->windowXLEdit->text().toInt();
-    int YL = ui->windowYLEdit->text().toInt();
-    int XR = ui->windowXREdit->text().toInt();
-    int YR = ui->windowYREdit->text().toInt();
-    
-    rect = (RECT*)(new char[sizeof(RECT)]);
-    rect->x_max = XR;
-    rect->x_min = XL;
-    rect->y_max = YR;
-    rect->y_min = YL;
-    
-    QRgb black;
-    black = qRgb(0, 0, 0);
-    
-    for(int i=0; i<4; i++)
-    {
-        int x1=0, x2=0, y=0, y1=0, y2=0;
-        int x=0;
-        switch (i) {
-        case 0:
-            x1 = XL;
-            x2 = XR;
-            y1 = YL;
-            y2 = YL;
-            drawLine(x1, y1, x2, y2, 'y', black);
-            break;
-        case 1:
-            x1 = XR;
-            x2 = XR;
-            y1 = YL;
-            y2 = YR;
-            drawLine(x1, y1, x2, y2, 'x', black);
-            
-            break;
-        case 2:
-            x1 = XL;
-            x2 = XR;
-            y1 = YR;
-            y2 = YR;
-            drawLine(x1, y1, x2, y2, 'y', black);
-            break;
-        case 3:
-            x1 = XL;
-            x2 = XL;
-            y1 = YL;
-            y2 = YR;
-            drawLine(x1, y1, x2, y2, 'x', black);
-            break;
-        default:
-            break;
-        }
-    }
-    
+    rect->x_min = ui->windowXLEdit->text().toInt();
+    rect->y_min = ui->windowYLEdit->text().toInt();
+    rect->x_max = ui->windowXREdit->text().toInt();
+    rect->y_max = ui->windowYREdit->text().toInt();
+
+    QPainter *g = new QPainter(image);
+    g->drawLine(rect->x_min, rect->y_min, rect->x_max, rect->y_min);
+    g->drawLine(rect->x_max, rect->y_min, rect->x_max, rect->y_max);
+    g->drawLine(rect->x_max, rect->y_max, rect->x_min, rect->y_max);
+    g->drawLine(rect->x_min, rect->y_max, rect->x_min, rect->y_min);
+
+    delete g;
     emit endFunc();
-    
-    
+
 }
 
 void Lab3::on_lineButton_clicked()
 {
-    QRgb black;
-    black = qRgb(0, 0, 0);
-    QRgb red;
-    red = qRgb(255, 0, 0);
-    char ch = 'y';
-
-    int P1x = ui->lineX0Edit->text().toInt();
-    int P1y = ui->lineY0Edit->text().toInt();
-    int P2x = ui->lineX1Edit->text().toInt();
-    int P2y = ui->lineY1Edit->text().toInt();
-
-    if(P1x > P2x)
-    {
-        int x = P1x;
-        P1x = P2x;
-        P2x = x;
-        int y = P1y;
-        P1y = P2y;
-        P2y = y;
-    }
-
-
-    drawLine(P1x, P1y, P2x, P2y, ch, black);
-
-    int val = KolSozLine(P1x, P1y, P2x, P2y);
-    switch (val) {
-    case -1:
-        drawLine(P1x, P1y, P2x, P2y, ch, black);
-        break;
-    case 1:
-        drawLine(P1x, P1y, P2x, P2y, ch, red);
-        break;
-    default:
-        break;
-    }
-
+    a->x = ui->lineX0Edit->text().toInt();
+    a->y = ui->lineY0Edit->text().toInt();
+    b->x = ui->lineX1Edit->text().toInt();
+    b->y = ui->lineY1Edit->text().toInt();
+    QPainter *g = new QPainter(image);
+    g->drawLine(a->x, a->y, b->x, b->y);
+    delete g;
+    cohen_sutherland();
     emit endFunc();
 }
 
-int Lab3::Code(int x, int y)
+int Lab3::cohen_sutherland()
 {
-    int c = 0;
-    if(x < rect->x_min)
-        c = c | LEFT;
-    if(x > rect->x_max)
-        c =  c | RIGHT;
-    if(y < rect->y_min)
-        c = c | TOP;
-    if(y > rect->y_max)
-        c = c | BOT;
-    return c;
-}
+    int code_a, code_b, code;
+    code_a = vcode('a');
+    code_b = vcode('b');
 
-int Lab3::KolSozLine(int P1x, int P1y, int P2x, int P2y)
-{
-    QRgb red;
-    red = qRgb(255,0,0);
-
-    int C=0, Px = 0, Py = 0;
-    int C1 = Code(P1x, P1y);
-    int C2 = Code(P2x, P2y);
-
-    while(C1 != 0 || C2 != 0)
+    while(code_a | code_b)
     {
-        if(C1 == 0 && C2 == 0)
+        if(code_a)
         {
-            return 1;
-        }
-
-        if((C1&C2) != 0)
-        {
-            return -1;
-        }
-        
-        if (C1)
-        {
-            C = C1;
-            Px = P1x;
-            Py = P1y;
-        }
-        else if(C2)
-        {
-            C = C2;
-            Px = P2x;
-            Py = P2y;
-        }
-        
-        if(C & LEFT)
-        {
-            Px = rect->x_min;
-            //Py += (P1y-P2y)*(rect->x_min-Px)/(P1x- P2x);
-            Py += (P2y - P1y) / (P2x - P1x) * (rect->x_min - P1x);
-        }
-        else
-            if (C & RIGHT)
-            {
-                Px = rect->x_max;
-                //Py += (P1y-P2y)*(rect->x_max-Px)/(P1x-P2x);
-                Py += (P2y - P1y) / (P2x - P1x) * (rect->x_max - P1x);
-            }
-            else
-                if(C & BOT)
-                {
-                    Py = rect->y_min;
-                    //Px += (P1x-P2x)*(rect->y_min-Py)/(P1y-P2y);
-                    Py += (P2y - P1y) / (P2x - P1x) * (rect->y_min - P1x);
-                }
-                else
-                    if(C & TOP)
-                    {
-                        Py = rect->y_max;
-                        //Px += (P1x-P2x)*(rect->y_max-Py)/(P1y-P2y);
-                        Py += (P2y - P1y) / (P2x - P1x) * (rect->y_max - P1x);
-                    }
-
-        if(C == C1)
-        {
-            P1x = Px;
-            P1y = Py;
-            C1 = Code(P1x, P1y);
+            code = code_a;
+            c = a;
         }
         else
         {
-            P2x = Px;
-            P2y = Py;
-            C2 = Code(P2x, P2y);
+            code = code_b;
+            c = b;
         }
+
+        if (code & LEFT)
+        {
+            c->y += (a->y - b->y) * (rect->x_min - c->x) / (a->x - b->x);
+            c->x = rect->x_min;
+        } else if (code & RIGHT) {
+            c->y += (a->y - b->y) * (rect->x_max - c->x) / (a->x - b->x);
+            c->x = rect->x_max;
+        }/* если c ниже r, то передвигаем c на прямую y = r->y_min
+                    если c выше r, то передвигаем c на прямую y = r->y_max */
+        else if (code & BOT) {
+            c->x += (a->x - b->x) * (rect->y_max - c->y) / (a->y - b->y);
+            c->y = rect->y_max;
+        } else if (code & TOP) {
+            c->x += (a->x - b->x) * (rect->y_min - c->y) / (a->y - b->y);
+            c->y = rect->y_min;
+        }
+
+        /* обновляем код */
+        if (code == code_a) {
+            a = c;
+            code_a = vcode('a');
+        } else {
+            b = c;
+            code_b = vcode('b');
+        }
+
     }
-    drawLine(P1x, P1y, P2x, P2y, 'y', red);
-    return 0;
+
+    QPainter *g = new QPainter(image);
+    QColor color(255, 0, 0, 255);
+    g->setPen(color);
+    g->drawLine(a->x, a->y, b->x, b->y);
+    delete g;
 }
 
-void Lab3::drawLine(int x1, int y1, int x2, int y2, char ch, QRgb color)
+int Lab3::vcode(char ch)
 {
-    double x=0, y=0;
+    int result = 0;
     switch (ch) {
-    case 'y':
-        for(x = x1; x<x2; x+=0.01)
-        {
-            y = ((x-x1)*(y2-y1)) / (x2-x1) + y1;
-            image->setPixel(x, y, color);
-        }
+    case 'a':
+        if(a->x < rect->x_min)
+            result += LEFT;
+        if(a->x > rect->x_max)
+            result += RIGHT;
+        if(a->y < rect->y_min)
+            result += TOP;
+        if(a->y > rect->y_max)
+            result += BOT;
         break;
-    case 'x':
-        for(y=y1; y<y2; y+=0.01)
-        {
-            x = ((x2-x1)*(y2-y1)) / (y2-y1) + x1;
-            image->setPixel(x, y, color);
-        }
+    case 'b':
+        if(b->x < rect->x_min)
+            result += LEFT;
+        if(b->x > rect->x_max)
+            result += RIGHT;
+        if(b->y < rect->y_min)
+            result += TOP;
+        if(b->y > rect->y_max)
+            result += BOT;
         break;
     default:
-        QMessageBox::information(this, "Warning", "Bad parameter. Need x or y.");
+        QMessageBox::information(this, "Warning", "Choose A or B in argument");
         break;
     }
-}
 
+return result;
+}
 
 
