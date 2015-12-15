@@ -7,7 +7,7 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     MainApplication *w = new MainApplication();
-    w->show();
+    w->showMaximized();
     QObject::connect(w, SIGNAL(exit()),
                      &a, SLOT(quit()));
 

@@ -7,11 +7,15 @@ MainApplication::MainApplication(QWidget *parent) :
 {
     ui->setupUi(this);
     image = new QImage();
+    old_image = new QImage();
+
     L1 = new Lab1(this, *image);
     L2 = new Lab2(this, *image);
+    L3 = new Lab3(this, *image);
+    L4 = new Lab4(this, *image);
     actionOpen = new QAction(this);
     actionSave = new QAction(this);
-    actionSaveAs = new QAction(this);
+    actionSaveAs = new QAction(this);    
 
     actionOpen->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_O));
     ui->centralWidget->addAction(actionOpen);
@@ -21,7 +25,6 @@ MainApplication::MainApplication(QWidget *parent) :
 
     actionSaveAs->setShortcut((QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_S)));
     ui->centralWidget->addAction(actionSaveAs);
-
 
     connect(actionOpen, &QAction::triggered,
             this, &MainApplication::openFile);
@@ -38,6 +41,8 @@ MainApplication::MainApplication(QWidget *parent) :
             this, &MainApplication::saveAsFile);
     connect(ui->actionExit, &QAction::triggered,
             this, &MainApplication::exitApp);
+    connect(ui->actionClean, &QAction::triggered,
+            this, &MainApplication::setOldImage);
 
     connect(ui->actionLab1, &QAction::triggered,
             this, &MainApplication::runLab1);
@@ -49,6 +54,15 @@ MainApplication::MainApplication(QWidget *parent) :
     connect(L2, &Lab2::endFunc,
             this, &MainApplication::setLabelImage);
 
+    connect(ui->actionLab3, &QAction::triggered,
+            this, &MainApplication::runLab3);
+    connect(L3, &Lab3::endFunc,
+            this, &MainApplication::setLabelImage);
+
+    connect(ui->actionLab4, &QAction::triggered,
+            this, &MainApplication::runLab4);
+    connect(L4, &Lab4::endFunc,
+            this, &MainApplication::setLabelImage);
 }
 
 MainApplication::~MainApplication()
@@ -58,10 +72,12 @@ MainApplication::~MainApplication()
 
 void MainApplication::openFile()
 {
-    filename = QFileDialog::getOpenFileName(0, "Open File", "D:", "*.bmp");
+    //filename = QFileDialog::getOpenFileName(0, "Open File", "D:", "*.bmp");
+    filename = "D:\\data.png";
     if(!filename.isNull())
     {
         image->load(filename);
+        old_image = new QImage(*image);
         ui->label->setPixmap(QPixmap(filename));
         ui->menuLabs->setEnabled(true);
         ui->actionSave->setEnabled(true);
@@ -107,6 +123,12 @@ void MainApplication::exitApp()
     emit exit();
 }
 
+void MainApplication::setOldImage()
+{
+    image = old_image;
+    ui->label->setPixmap(QPixmap::fromImage(*image));
+}
+
 void MainApplication::setLabelImage()
 {
     ui->label->setPixmap(QPixmap::fromImage(*image));
@@ -120,4 +142,14 @@ void MainApplication::runLab1()
 void MainApplication::runLab2()
 {
     L2->show();
+}
+
+void MainApplication::runLab3()
+{
+    L3->show();
+}
+
+void MainApplication::runLab4()
+{
+    L4->show();
 }

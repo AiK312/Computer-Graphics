@@ -8,6 +8,8 @@ Lab2::Lab2(QWidget *parent) :
     image = new QImage();
     ui->setupUi(this);
     srand(time(0));
+    connect(ui->buttonOpen, &QPushButton::clicked,
+            ui->label, &QLabel::clear)
 
 }
 
